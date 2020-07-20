@@ -1,0 +1,72 @@
+<div fxLayout="row"
+     fxLayout.xs="column"
+     fxLayoutAlign="center center"
+     class="search-background"
+>
+
+  <form class="example-form">
+    <mat-form-field class="example-full-width" layout="row" flex appearance="outline">
+      <mat-label>Github Username</mat-label>
+      <input matInput [formControl]="emailFormControl" placeholder="Escreva o nome de usuário" [value]="'fabionvs'"
+             (change)="getRepos(this.emailFormControl.value)">
+      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="this.emailFormControl.setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        Username é <strong>obrigatório</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+
+<div class="search-background"
+     fxLayout="row wrap" fxLayoutGap="32px"
+     fxLayout.xs="column"
+     fxLayout.sm="column"
+     *ngIf="gitHubRepositories?.length > 0"
+>
+  <div fxFlex="0 1 calc(50% - 32px)" *ngFor="let repo of gitHubRepositories">
+    <mat-card style="margin-bottom: 32px;">
+    <mat-card-header>
+      <img mat-card-avatar src="{{repo.owner.avatar_url}}" alt="...">
+      <mat-card-title>{{repo.name}}</mat-card-title>
+      <mat-card-subtitle>{{repo.full_name}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{(repo.description != null) ? repo.description : 'Sem descrição'}}
+      </p>
+      <mat-list fxLayout.xs="column" fxLayout="row" class="list-repo">
+        <mat-list-item><mat-icon [matTooltip]="'Forks'">shuffle</mat-icon> {{repo.forks}} </mat-list-item>
+        <mat-list-item> <mat-icon [matTooltip]="'Issues'">error_outline</mat-icon> {{repo.open_issues}}  </mat-list-item>
+        <mat-list-item> <mat-icon [matTooltip]="'Watchers'">visibility</mat-icon> {{repo.watchers}}  </mat-list-item>
+        <mat-list-item> <mat-icon [matTooltip]="'Data de Criação'">event_available</mat-icon> {{repo.created_at| date: 'dd/MM/yyyy'}}  </mat-list-item>
+        <mat-list-item > <mat-icon [matTooltip]="'Language'">code</mat-icon> {{(repo.language) ? repo.language : 'Não definido'}}  </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="center right">
+      <a href="{{repo.html_url}}" target="_blank" mat-button><mat-icon>launch</mat-icon> Acessar</a>
+    </mat-card-actions>
+    </mat-card>
+
+  </div>
+
+</div>
+<div class="search-background"
+     fxLayout="column"
+     fxLayoutAlign=""
+     fxLayoutGap="20px"
+     style="padding: 20px"
+     *ngIf="gitHubRepositories?.length == 0"
+>
+  <mat-card class="example-card">
+    <mat-card-content fxLayoutAlign="center center">
+      <mat-icon>close</mat-icon>
+      <p>
+        Nenhum usuário encontrado
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+</div>
