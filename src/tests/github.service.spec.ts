@@ -116,7 +116,7 @@ describe('GithubService', () => {
       default_branch: 'master'
     }];
 
-    service.getRepositories().subscribe(repos => {
+    service.getRepositories('fabionvs').subscribe(repos => {
       expect(repos.length).toBe(1);
       expect(repos).toEqual(gitRepos);
     });
